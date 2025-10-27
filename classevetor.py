@@ -1,4 +1,13 @@
 #Classe vetor
+import os  
+
+def limpa_tela_pausa():
+    input("Enter para continuar..")
+    os.system('cls')
+
+def limpa_tela():
+    os.system('cls') 
+
 class Vetor():
     def __init__(self, tamanho):
         self.tamanho = tamanho
@@ -22,102 +31,105 @@ class Vetor():
     
     #1
     #incluindo itens no vetor e aumentando fim
-    def entrada_vetor(self):
-        if not self.esta_cheia():
-            entrada_usuario = int(input("Digite um número: "))
-            self.vetor[self.fim] = entrada_usuario
-            print(f"Número {entrada_usuario} incluido com sucesso no índice {self.fim}")
-            self.fim += 1
-        else:
-            print("-> O vetor esta cheio.")
+    def entrada_vetor(self, entrada_usuario):
+        self.vetor[self.fim] = entrada_usuario
+        self.fim += 1
 
     #2
-    #printando os itens do vetor
-    def printar(self):
-        if not self.esta_vazio():
-            print("Printando dados.")
-            for i in range (self.fim):
-                print(f"| {self.vetor[i]} |", end="")
-        else:
-            print("-> O vetor esta vazio.")
+    #retirar valor por numero
+    def retirar_valor(self,valor_retirar):
+        indices_valor = self.retorna_indices(valor_retirar)
+        for item in indices_valor:     
+            self.vetor[item] = -1
+            self.fim -= (len(indices_valor))
+        return indices_valor
+
+    #retirar valor por numero índice  
+    def retirar_indice(self,indice):
+        valor_retirado = self.vetor[indice]
+        self.vetor[indice] = -1
+        self.fim -= 1
+        return valor_retirado
 
     #3
-    #printando de tras para frente os itens do vetor
-    def printar_trasfrente(self):
-        if not self.esta_vazio():
-            print("Printando dados de trás para frente.")
-            for i in range(self.fim-1,-1,-1):
-                print(f"{self.vetor[i]}")
-        else:
-            print("-> O vetor esta vazio.")
+    # printar elementos do vetor    
+    def printar(self):
+        for i in range (self.fim):
+            print(f"| {self.vetor[i]} |", end="")
+    
+    def printar_indices(self):
+        for i in range (self.fim):
+            print(f"  {i}  ", end="")
 
     #4
-    #retorna quantas vezes determinado número consta no vetor
-    def frequencia_valor(self, valor):
-        contador = 0
-        for i in range (self.fim):
-            if self.vetor[i] == valor:
-                contador += 1
-        return contador
-    
+    # printar de trás para frente os elementos do vetor 
+    def printr_tf(self):
+        for i in range(self.fim-1,-1,-1):
+            print(f"| {self.vetor[i]} |", end="")
     #5
+    #retorna quantas vezes determinado número consta no vetor
+    def frequencia_valor(self,valor):
+        if self.encontrar_valor(valor):
+            contador = 0
+            for i in range (self.fim):
+                if self.vetor[i] == valor:
+                    contador += 1
+            return contador
+        else:
+            return False
+    
+    #6
     #retorna os indices que determinado número se encontra
     def retorna_indices(self,valor):
-        vetor_indices = []
-        for i in range(self.fim):
-            if self.vetor[i] == valor:
-                vetor_indices.append(i)
-    
-        return vetor_indices
-    
-    #substitui determinado valor por outro
-    def troca_valor(self):
-        if not self.esta_vazio():
-            valor_vetor = int(input("Entre com o valor a ser substituido: "))
-            vetor_indices = self.retorna_indices(valor_vetor)
-            if len(vetor_indices) > 0:
-                novo_valor = int(input("Entre com o novo valor: "))
-                for item in vetor_indices:
-                    self.vetor[item]  = novo_valor
-            else:
-                print("Esse número não esta no vetor.")
+        if self.encontrar_valor(valor):
+            vetor_indices = []
+            for i in range(self.fim+1):
+                if self.vetor[i] == valor:
+                    vetor_indices.append(i)
+            return vetor_indices
         else:
-            print("-> O vetor esta vazio.")
-
+            return False
+    
+    #7
+    #substitui determinado valor por outro
+    def substitui_valor(self,valor_vetor, novo_valor):
+        indices_valor = self.retorna_indices(valor_vetor)
+        for item in indices_valor:
+            self.vetor[item] = novo_valor
+        return indices_valor
+    
+    #8
     #soma todos os números do vetor    
     def soma_valores(self):
-        if not self.esta_vazio():
-            somador = 0
-            for i in range(self.fim):
-                somador += self.vetor[i]
-            return somador
-        else:
-            print("-> O vetor esta vazio.")
+        somador = 0
+        for i in range(self.fim):
+            somador += self.vetor[i]
+        return somador
 
+    #9
     #retorna o maior e menor valor        
-    def encontra_maior(self):
-        if not self.esta_vazio:
-            maior = self.vetor[0]
-            menor = self.vetor[0]
-            indices_maior = [0]
-            indices_menor = [0]
-
-            for i in range(1,self.fim):
-                atual = self.vetor[i]
-                if atual > maior:
-                    maior = atual
-                    indices_maior = [i]
-                elif atual == maior:
-                    indices_maior.append(i)
-                elif atual < menor:
-                    menor = atual
-                    indices_menor = [i]
-                elif atual == menor:
-                    indices_menor.append(i)
-
-        print(f" Menor valor: {menor} nos indices: {indices_menor}")
-        print(f" Maior valor: {menor} nos indices: {indices_maior}")
+    def encontra_maior_menor(self):
+        maior = self.vetor[0]
+        menor = self.vetor[0]
+        indices_maior = [0]
+        indices_menor = [0]
         
-    
+        for i in range(1,self.fim):
+            atual = self.vetor[i]
+            if atual > maior:
+                maior = atual
+                indices_maior = [i]
+            elif atual == maior:
+                 indices_maior.append(i)
+            elif atual < menor:
+                menor = atual
+                indices_menor = [i]
+            elif atual == menor:
+                indices_menor.append(i)
+        if maior == menor:
+                return self.vetor[0]
+        return maior,menor,indices_maior,indices_menor
+
+
 
     
