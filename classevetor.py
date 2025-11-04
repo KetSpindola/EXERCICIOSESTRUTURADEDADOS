@@ -24,7 +24,7 @@ class Vetor():
     
     #retorna bollean se um determinado valor esta no vetor ou não
     def encontrar_valor(self,valor):
-        for i in range(self.fim):
+        for i in range(self.fim+1):
             if self.vetor[i] == valor:
                 return True
         return False
@@ -39,17 +39,20 @@ class Vetor():
     #retirar valor por numero
     def retirar_valor(self,valor_retirar):
         indices_valor = self.retorna_indices(valor_retirar)
-        for item in indices_valor:     
+        for item in indices_valor:
             self.vetor[item] = -1
-            self.fim -= (len(indices_valor))
+            for i in range (0,self.fim):
+                if self.vetor[i] == -1:
+                    self.vetor[i] = self.vetor[i+1]
+                    self.vetor[i+1] = -1
+        self.fim -= len(indices_valor)
         return indices_valor
 
-    #retirar valor por numero índice  
-    def retirar_indice(self,indice):
-        valor_retirado = self.vetor[indice]
+    #retirar valor por número índice
+    def retirar_indice(self, indice):
         self.vetor[indice] = -1
         self.fim -= 1
-        return valor_retirado
+
 
     #3
     # printar elementos do vetor    
@@ -59,7 +62,7 @@ class Vetor():
     
     def printar_indices(self):
         for i in range (self.fim):
-            print(f"  {i}  ", end="")
+            print(f"   {i}  ", end="")
 
     #4
     # printar de trás para frente os elementos do vetor 
@@ -111,24 +114,16 @@ class Vetor():
     def encontra_maior_menor(self):
         maior = self.vetor[0]
         menor = self.vetor[0]
-        indices_maior = [0]
-        indices_menor = [0]
+
         
-        for i in range(1,self.fim):
-            atual = self.vetor[i]
+        for i in range(1,self.fim+1):
+            atual = self.vetor[i-1]
             if atual > maior:
                 maior = atual
-                indices_maior = [i]
-            elif atual == maior:
-                 indices_maior.append(i)
             elif atual < menor:
                 menor = atual
-                indices_menor = [i]
-            elif atual == menor:
-                indices_menor.append(i)
-        if maior == menor:
-                return self.vetor[0]
-        return maior,menor,indices_maior,indices_menor
+
+        return maior,menor
 
 
 
