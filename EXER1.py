@@ -141,12 +141,12 @@ def main():
                                     vetor.printar_indices()
                                     print("")
                                     print("============================================")
-                                    entrada_usuario = int(input("Informe qual valor deseja retirar: "))
-                                    if vetor.encontrar_valor(entrada_usuario):
+                                    entrada_usuario = int(input("Informe qual índice deseja retirar: "))
+                                    if entrada_usuario >= 0 and entrada_usuario <= vetor.fim -1:
                                         indices_valor = vetor.retorna_indices(entrada_usuario)
+                                        vetor.retirar_indice(indices_valor)
                                         for item in indices_valor:
-                                            valor_retirado = vetor.retirar_indice(item)
-                                            print(f"-> Valor {valor_retirado} retirado do índice {item}.")
+                                            print(f"-> Valor retirado do índice {item}.")
                                             print("\n")
                                         limpa_tela_pausa()
                                         break
@@ -287,13 +287,9 @@ def main():
                     limpa_tela()
                     print("Você escolheu a opção 7 - Printar maior e menor valor.")
                     print("======================================================")
-                    retorno_funcao = vetor.encontra_maior_menor()
-                    if not retorno_funcao is False:
-                        maior,menor,indices_maior,indices_menor = retorno_funcao
-                        print(f" Menor valor: {menor} no(s) indice(s): {indices_menor}")
-                        print(f" Maior valor: {maior} no(s) indice(s): {indices_maior}")
-                    else:
-                        print("O vetor possui um único valor, portanto, o maior e menor é {retorno_funcao}")
+                    maior,menor = vetor.encontra_maior_menor()
+                    print(f" Menor valor: {menor} ")
+                    print(f" Maior valor: {maior} ")
                     print("\n")
                     limpa_tela_pausa()
                 case _:
